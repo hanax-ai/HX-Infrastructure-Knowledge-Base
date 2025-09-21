@@ -130,6 +130,20 @@ Revisit checklist at each phase transition (Crawl→Walk, Walk→Run).
 
 For extended guardrails, see [docs/guardrails/CHECKLIST.md](docs/guardrails/CHECKLIST.md) (placeholder).
 
+## Repository Variable & Secret
+
+Correct canonical names used by the connectivity workflow:
+
+- **Repository variable**: `HX_KB_VAR` – non-sensitive value used to validate repo variable presence.
+- **Repository secret**: `HX_KB_SECRET` – placeholder secret used only for connectivity/presence validation (never store real credentials in this example).
+
+Notes:
+
+- Spelling: use "secret" (not "secrete").
+- Naming pattern follows `HX_<DOMAIN>_<KIND>`; extend similarly for future items (e.g., `HX_KB_TOKEN`).
+- Update the GitHub repository Settings → Secrets and variables if either name changes; keep workflow file in sync.
+
+
 ## Metrics & Baseline
 
 Track improvements vs. HX-Infrastructure. Fill in for new projects:
