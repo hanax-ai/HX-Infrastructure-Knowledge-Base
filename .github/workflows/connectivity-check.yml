@@ -1,0 +1,54 @@
+name: Connectivity Check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/connectivity-check.yml'
+
+jobs:
+  validate-secrets-and-variables:
+    name: Validate Repo Variable & Secret (OS=${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      REPO_VAR: ${{ vars.HX_KB_VAR }}
+      REPO_SECRET: ${{ secrets.HX_KB_SECRET }}
+    steps:
+      - name: Start
+        shell: bash
+        run: echo "Starting connectivity / presence validation on ${{ matrix.os }}"
+
+      - name: Check variable presence
+        shell: bash
+        run: |
+          if [ -z "${REPO_VAR}" ]; then
+            echo "::error title=Missing Variable::Repository variable HX_KB_VAR is not set or empty";
+            exit 1;
+          else
+            echo "Repository variable HX_KB_VAR is present (value length=$(echo -n "$REPO_VAR" | wc -c))";
+          fi
+
+      - name: Check secret presence (length only)
+        shell: bash
+        run: |
+          if [ -z "${REPO_SECRET}" ]; then
+            echo "::error title=Missing Secret::Repository secret HX_KB_SECRET is not set or empty";
+            exit 1;
+          else
+            echo "Repository secret HX_KB_SECRET is present (masked)";
+          fi
+
+      - name: Summarize
+        if: success()
+        shell: bash
+        run: |
+          echo "All connectivity checks passed on ${{ matrix.os }}." >> $GITHUB_STEP_SUMMARY
+          echo "| Item | Status | OS |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|----|" >> $GITHUB_STEP_SUMMARY
+          echo "| HX_KB_VAR | Present | ${{ matrix.os }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| HX_KB_SECRET | Present | ${{ matrix.os }} |" >> $GITHUB_STEP_SUMMARY
