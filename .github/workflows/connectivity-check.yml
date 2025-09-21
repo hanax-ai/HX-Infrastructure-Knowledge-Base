@@ -17,7 +17,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       REPO_VAR: ${{ vars.HX_KB_VAR }}
-      REPO_SECRET: ${{ secrets.HX_KB_SECRET }}
+      # NOTE: Legacy spelling 'HX_KB_SECRETE' intentionally retained to match existing repository secret.
+      REPO_SECRET: ${{ secrets.HX_KB_SECRETE }}
     steps:
       - name: Start
         shell: bash
@@ -37,10 +38,10 @@ jobs:
         shell: bash
         run: |
           if [ -z "${REPO_SECRET}" ]; then
-            echo "::error title=Missing Secret::Repository secret HX_KB_SECRET is not set or empty";
+            echo "::error title=Missing Secret::Repository secret HX_KB_SECRETE is not set or empty";
             exit 1;
           else
-            echo "Repository secret HX_KB_SECRET is present (masked)";
+            echo "Repository secret HX_KB_SECRETE is present (masked)";
           fi
 
       - name: Summarize
@@ -51,4 +52,4 @@ jobs:
           echo "| Item | Status | OS |" >> $GITHUB_STEP_SUMMARY
           echo "|------|--------|----|" >> $GITHUB_STEP_SUMMARY
           echo "| HX_KB_VAR | Present | ${{ matrix.os }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| HX_KB_SECRET | Present | ${{ matrix.os }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| HX_KB_SECRETE | Present | ${{ matrix.os }} |" >> $GITHUB_STEP_SUMMARY

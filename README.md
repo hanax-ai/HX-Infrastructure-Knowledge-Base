@@ -135,11 +135,11 @@ For extended guardrails, see [docs/guardrails/CHECKLIST.md](docs/guardrails/CHEC
 Correct canonical names used by the connectivity workflow:
 
 - **Repository variable**: `HX_KB_VAR` – non-sensitive value used to validate repo variable presence.
-- **Repository secret**: `HX_KB_SECRET` – placeholder secret used only for connectivity/presence validation (never store real credentials in this example).
+- **Repository secret**: `HX_KB_SECRETE` – legacy spelling retained intentionally to match current configured GitHub Actions secret; do not change until a coordinated rename is performed.
 
 Notes:
 
-- Spelling: use "secret" (not "secrete").
+- Legacy spelling note: The secret name includes a trailing 'E' (`HX_KB_SECRETE`). Keep as-is until a migration plan (create new `HX_KB_SECRET`, update workflow, then remove old) is executed.
 - Naming pattern follows `HX_<DOMAIN>_<KIND>`; extend similarly for future items (e.g., `HX_KB_TOKEN`).
 - Update the GitHub repository Settings → Secrets and variables if either name changes; keep workflow file in sync.
 
